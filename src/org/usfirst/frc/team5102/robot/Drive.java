@@ -1,24 +1,25 @@
 package org.usfirst.frc.team5102.robot;
 
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.TalonSRX;
 
 public class Drive
 {
-	private TalonSRX leftDriveMotor1, leftDriveMotor2, rightDriveMotor1, rightDriveMotor2;
+	private TalonSRX frontRightDrive, frontLeftDrive, backRightDrive, backLeftDrive;
+	
+	private RobotDrive robotDrive;
 	
 	Drive()
 	{
-		leftDriveMotor1 = new TalonSRX(1);
-		leftDriveMotor2 = new TalonSRX(2);
-		rightDriveMotor1 = new TalonSRX(3);
-		rightDriveMotor2 = new TalonSRX(4);
+		frontRightDrive = new TalonSRX(1);
+		frontLeftDrive = new TalonSRX(2);
+		backLeftDrive = new TalonSRX(3);
+		backRightDrive = new TalonSRX(4);
+		robotDrive = new RobotDrive(1,2,3,4);
 	}
 	
-	public void driveSpeed(double leftDriveSpeed, double rightDriveSpeed)
+	public void drive(double magnitude, double curve)
 	{
-		leftDriveMotor1.set(leftDriveSpeed);
-		leftDriveMotor2.set(leftDriveSpeed);
-		rightDriveMotor1.set(rightDriveSpeed);
-		rightDriveMotor2.set(rightDriveSpeed);
+		robotDrive.arcadeDrive(magnitude, curve);
 	}
 }
