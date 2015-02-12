@@ -29,24 +29,22 @@ public class Elevator
 			{
 				leftElevatorMotor.set(raiseAmount);
 				rightElevatorMotor.set(raiseAmount);
+				return;
 			}
 		}
 		
-		else if(bottomElevatorLimit.get())
+		if(bottomElevatorLimit.get())
 		{
 			if(raiseAmount > 0)
 			{
 				leftElevatorMotor.set(raiseAmount);
 				rightElevatorMotor.set(raiseAmount);
+				return;
 			}
-		}
-		
-		else
-		{
+			
 			leftElevatorMotor.set(raiseAmount);
 			rightElevatorMotor.set(raiseAmount);
 		}
-		
 	}
 	
 	//what about lower limit?

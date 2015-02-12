@@ -15,7 +15,7 @@ public class Drive
 		frontLeftDrive = new TalonSRX(2);
 		backLeftDrive = new TalonSRX(3);
 		backRightDrive = new TalonSRX(4);
-		robotDrive = new RobotDrive(1,2,3,4);
+		robotDrive = new RobotDrive(frontLeftDrive, backLeftDrive, frontRightDrive, backRightDrive);
 	}
 	
 	public void drive(double magnitude, double curve)
