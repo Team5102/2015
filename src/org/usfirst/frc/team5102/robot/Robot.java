@@ -10,13 +10,17 @@ import edu.wpi.first.wpilibj.IterativeRobot;
  * creating this project, you must also update the manifest file in the resource
  * directory.
  */
-public class Robot extends IterativeRobot {
+public class Robot extends IterativeRobot 
+{
+	private Elevator elevator;
+	private Drive drive;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
      */
     public void robotInit() {
-
+    	elevator = new Elevator();
+    	drive = new Drive();
     }
 
     /**
