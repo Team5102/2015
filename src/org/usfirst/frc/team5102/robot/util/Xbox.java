@@ -6,6 +6,8 @@ public class Xbox
 {
 	private Joystick stick;
 	
+	private double deadband = 0.02;
+	
 	private int i = 0;
 	
 	public Xbox(int port)
@@ -46,6 +48,22 @@ public class Xbox
 	public boolean getButtonB()
 	{
 		return stick.getRawButton(1);
+	}
+	
+	public double applyDeadband(double magnitude, double deadband)
+	{
+		
+		if(Math.abs(magnitude) > deadband)
+		{
+			return magnitude;
+		}
+		
+		return 0.00;
+	}
+	
+	public double applyDeadband(double magnitude)
+	{
+		return applyDeadband(magnitude, deadband);
 	}
 	
 }

@@ -3,7 +3,7 @@ package org.usfirst.frc.team5102.robot;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.TalonSRX;
 
-public class Elevator
+public class Elevator extends RobotElement
 {
 	private TalonSRX leftElevatorMotor, rightElevatorMotor;
 	
@@ -14,6 +14,7 @@ public class Elevator
 	
 	public Elevator()
 	{
+		super(1);	//1 is the  port
 		leftElevatorMotor = new TalonSRX(8);
 		rightElevatorMotor = new TalonSRX(9);
 		claw = new Claw();
@@ -47,5 +48,19 @@ public class Elevator
 		}
 	}
 	
-	//what about lower limit?
+	public void teleop()
+	{
+		if(controller.getLeftStickY() != 0 || controller.getRightStickY() != 0)
+		{
+			if(controller.applyDeadband(controller.getRightStickY()) != 0)
+			{
+				raiseElevator(controller.getRightStickY());
+			}
+		}
+	}
+	
+	public void autonomous()
+	{
+		
+	}
 }
