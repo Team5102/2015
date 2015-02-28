@@ -13,9 +13,9 @@ public class Drive extends RobotElement
 	{
 		super(0);	//0 is the controller port
 		frontRightDrive = new Talon(0);
-		frontLeftDrive = new Talon(1);
-		backLeftDrive = new Talon(2);
-		backRightDrive = new Talon(3);
+		frontLeftDrive = new Talon(2);
+		backLeftDrive = new Talon(3);
+		backRightDrive = new Talon(1);
 		robotDrive = new RobotDrive(frontLeftDrive, backLeftDrive, frontRightDrive, backRightDrive);
 	}
 	
