@@ -6,7 +6,7 @@ public class Xbox
 {
 	private Joystick stick;
 	
-	private double deadband = 0.02;
+	private double deadband = 0.05;
 	
 	private int i = 0;
 	

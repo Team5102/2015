@@ -12,10 +12,10 @@ public class Drive extends RobotElement
 	Drive()
 	{
 		super(0);	//0 is the controller port
-		frontRightDrive = new Talon(1);
-		frontLeftDrive = new Talon(2);
-		backLeftDrive = new Talon(3);
-		backRightDrive = new Talon(4);
+		frontRightDrive = new Talon(0);
+		frontLeftDrive = new Talon(1);
+		backLeftDrive = new Talon(2);
+		backRightDrive = new Talon(3);
 		robotDrive = new RobotDrive(frontLeftDrive, backLeftDrive, frontRightDrive, backRightDrive);
 	}
 	
@@ -26,7 +26,7 @@ public class Drive extends RobotElement
 	
 	public void teleop()
 	{
-		
+		drive(controller.getLeftStickY(), controller.getRightStickX());
 	}
 	
 	public void autonomous()
