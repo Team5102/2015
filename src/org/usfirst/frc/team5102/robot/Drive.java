@@ -26,7 +26,7 @@ public class Drive extends RobotElement
 	
 	public void teleop()
 	{
-		drive(controller.getLeftStickY(), controller.getRightStickX());
+		drive(controller.getLeftStickY(), -controller.getRightStickX());
 	}
 	
 	public void autonomous()

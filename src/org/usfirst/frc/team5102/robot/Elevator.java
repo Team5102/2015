@@ -3,10 +3,11 @@ package org.usfirst.frc.team5102.robot;
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Talon;
 
 public class Elevator extends RobotElement
 {
-	private CANTalon leftElevatorMotor, rightElevatorMotor;
+	private Talon elevatorMotor;
 	
 	private Claw claw;
 	
@@ -19,8 +20,7 @@ public class Elevator extends RobotElement
 	public Elevator()
 	{
 		super(1);	//1 is the  port
-		leftElevatorMotor = new CANTalon(10);
-		rightElevatorMotor = new CANTalon(11);
+		elevatorMotor = new Talon(6);
 		claw = new Claw();
 		topElevatorLimit = new DigitalInput(0); //check port
 		bottomElevatorLimit = new DigitalInput(1); //check port
@@ -40,12 +40,10 @@ public class Elevator extends RobotElement
 			if(raiseAmount > 0.0)
 			{
 				System.out.println("going down...");
-				leftElevatorMotor.set(raiseAmount);
-				rightElevatorMotor.set(raiseAmount);
+				elevatorMotor.set(raiseAmount);
 				return;
 			}
-			leftElevatorMotor.set(0.0);
-			rightElevatorMotor.set(0.0);
+			elevatorMotor.set(0.0);
 			return;
 		}
 		
@@ -57,16 +55,13 @@ public class Elevator extends RobotElement
 			{
 				System.out.println("going up...");
 				
-				leftElevatorMotor.set(raiseAmount);
-				rightElevatorMotor.set(raiseAmount);
+				elevatorMotor.set(raiseAmount);
 				return;
 			}
-			leftElevatorMotor.set(0.0);
-			rightElevatorMotor.set(0.0);
+			elevatorMotor.set(0.0);
 			return;
 		}
-		leftElevatorMotor.set(raiseAmount);
-		rightElevatorMotor.set(raiseAmount);
+		elevatorMotor.set(raiseAmount);
 	}
 	
 	public void toteHeight()
@@ -77,35 +72,21 @@ public class Elevator extends RobotElement
 		
 		boolean sensorStatus = true;
 		
-		if(currentHeight < 0.5)
+		while(sensorStatus == true)
 		{
-			while(sensorStatus == true)
+			if(currentHeight < 0.5)
 			{
-				leftElevatorMotor.set(-1.0);
-				rightElevatorMotor.set(-1.0);
-				System.out.println("motors set to 100%");
-				sensorStatus = toteHeightSensor.get();
+				elevatorMotor.set(-1.0);
 			}
 			
-			leftElevatorMotor.set(0.0);
-			rightElevatorMotor.set(0.0);
-			System.out.println("motors set to 0%");
-		}
-		
-		if(currentHeight > 0.5)
-		{
-			while(sensorStatus == true)
+			if(currentHeight > 0.5)
 			{
-				leftElevatorMotor.set(1.0);
-				rightElevatorMotor.set(1.0);
-				System.out.println("motors set to 100%");
-				sensorStatus = toteHeightSensor.get();
+				elevatorMotor.set(1.0);
 			}
 			
-			leftElevatorMotor.set(0.0);
-			rightElevatorMotor.set(0.0);
-			System.out.println("motors set to 0%");
+			sensorStatus = toteHeightSensor.get();
 		}
+		elevatorMotor.set(0.0);
 		
 		userInput = true;
 	}
