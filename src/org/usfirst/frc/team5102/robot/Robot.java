@@ -18,6 +18,7 @@ public class Robot extends IterativeRobot
 	private Drive drive;
 	private Shifter shifter;
 	private Claw claw;
+	private Intake intake;
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
@@ -27,6 +28,7 @@ public class Robot extends IterativeRobot
     	drive = new Drive();
     	shifter = new Shifter();
     	claw = new Claw();
+    	intake = new Intake();
     }
 
     /**
@@ -45,6 +47,7 @@ public class Robot extends IterativeRobot
     	elevator.teleop();
     	shifter.teleop();
     	claw.teleop();
+    	intake.teleop();
     }
     
     /**

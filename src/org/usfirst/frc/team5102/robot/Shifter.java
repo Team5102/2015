@@ -10,8 +10,7 @@ public class Shifter extends RobotElement
 	public Shifter()
 	{
 		super(0);
-		shifter = new DoubleSolenoid(1,2);
-		
+		shifter = new DoubleSolenoid(0,1);
 	}
 	
 	public void shiftGears(int gear)

@@ -11,7 +11,7 @@ public class Claw extends RobotElement
 	public Claw()
 	{	
 		super(1);
-		clawPiston = new DoubleSolenoid(7,6);
+		clawPiston = new DoubleSolenoid(2,3);
 	}
 		
 	public int getClawState()

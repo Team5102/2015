@@ -37,17 +37,22 @@ public class Xbox
 	
 	public boolean getButtonX()
 	{
-		return stick.getRawButton(2);
+		return stick.getRawButton(3);
 	}
 	
 	public boolean getButtonA()
 	{
-		return stick.getRawButton(0);
+		return stick.getRawButton(1);
 	}
 	
 	public boolean getButtonB()
 	{
-		return stick.getRawButton(1);
+		return stick.getRawButton(2);
+	}
+	
+	public boolean getButtonY()
+	{
+		return stick.getRawButton(4);
 	}
 	
 	public boolean getLeftTrigger()

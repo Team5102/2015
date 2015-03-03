@@ -1,15 +1,12 @@
 package org.usfirst.frc.team5102.robot;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
-import edu.wpi.first.wpilibj.CANTalon;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
 
 public class Elevator extends RobotElement
 {
 	private Talon elevatorMotor;
-	
-	private Claw claw;
 	
 	private DigitalInput topElevatorLimit;
 	private DigitalInput bottomElevatorLimit;
@@ -21,7 +18,6 @@ public class Elevator extends RobotElement
 	{
 		super(1);	//1 is the  port
 		elevatorMotor = new Talon(6);
-		claw = new Claw();
 		topElevatorLimit = new DigitalInput(0); //check port
 		bottomElevatorLimit = new DigitalInput(1); //check port
 		toteHeightSensor = new DigitalInput(2);
@@ -91,11 +87,28 @@ public class Elevator extends RobotElement
 		userInput = true;
 	}
 	
+	public void gotoBottom()
+	{
+		boolean limitStatus = true;
+		while(limitStatus == true)
+		{
+			elevatorMotor.set(-1.0);
+			limitStatus = bottomElevatorLimit.get();
+		}
+		elevatorMotor.set(0.0);
+	}
+	
+	public void userInput(boolean input)
+	{
+		userInput = input;
+	}
+	
+	
 	public void teleop()
 	{
 		if (userInput = true)
 		{
-			raiseElevator(controller.applyDeadband(controller.getRightStickY()));
+			raiseElevator(controller.applyDeadband(controller.getLeftStickY()));
 		}
 		
 		
