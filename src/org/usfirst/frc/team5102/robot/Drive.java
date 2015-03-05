@@ -9,9 +9,14 @@ public class Drive extends RobotElement
 	
 	private RobotDrive robotDrive;
 	
+	private Shifter shifter;
+	
 	Drive()
 	{
 		super(0);	//0 is the controller port
+		
+		shifter = new Shifter();
+		
 		frontRightDrive = new Talon(0);
 		frontLeftDrive = new Talon(2);
 		backLeftDrive = new Talon(3);
@@ -26,7 +31,23 @@ public class Drive extends RobotElement
 	
 	public void teleop()
 	{
+		//==========Drive==========
+		
 		drive(controller.getLeftStickY(), -controller.getRightStickX());
+		
+		//==========Shifter==========
+		
+		if(controller.getLeftTrigger())
+		{ 
+			shifter.shiftGears(1);
+			System.out.println("1st gear");
+		}
+		
+		if(controller.getRightTrigger())
+		{ 
+			shifter.shiftGears(2);
+			System.out.println("2nd gear");
+		}
 	}
 	
 	public void autonomous()

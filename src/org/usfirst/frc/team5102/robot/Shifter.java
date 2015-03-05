@@ -30,24 +30,4 @@ public class Shifter extends RobotElement
 			System.out.println(gear + " is not a valid gear");
 		}
 	}
-	
-	public void teleop()
-	{
-		if(controller.getLeftTrigger())
-		{ 
-			shiftGears(1);
-			System.out.println("1st gear");
-		}
-		
-		if(controller.getRightTrigger())
-		{ 
-			shiftGears(2);
-			System.out.println("2nd gear");
-		}
-	}
-	
-	public void autonomous()
-	{
-		
-	}
 }

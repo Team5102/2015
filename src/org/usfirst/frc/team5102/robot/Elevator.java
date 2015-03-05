@@ -14,14 +14,22 @@ public class Elevator extends RobotElement
 	private DigitalInput toteHeightSensor;
 	private boolean userInput = true;
 	
+	private Claw claw;
+	private Intake intake;
+	
 	public Elevator()
 	{
 		super(1);	//1 is the  port
+		
+		claw = new Claw();
+    	intake = new Intake();
+    	
 		elevatorMotor = new Talon(6);
 		topElevatorLimit = new DigitalInput(0); //check port
 		bottomElevatorLimit = new DigitalInput(1); //check port
 		toteHeightSensor = new DigitalInput(2);
 		potentiometer = new AnalogPotentiometer(0);
+		
 	}
 	
 	public void raiseElevator(double raiseAmount)
@@ -106,15 +114,39 @@ public class Elevator extends RobotElement
 	
 	public void teleop()
 	{
+		//==========Elevator==========
 		if (userInput = true)
 		{
 			raiseElevator(controller.applyDeadband(controller.getLeftStickY()));
 		}
 		
-		
 		if(controller.getButtonX())
 		{ 
 			toteHeight();
+		}
+		
+		//==========Claw==========
+		
+		if(controller.getLeftTrigger())
+		{ 
+			claw.closeClaw(true);
+		}
+		
+		if(controller.getRightTrigger())
+		{ 
+			claw.closeClaw(false);
+		}
+		
+		//==========Intake==========
+		
+		if(controller.getButtonA())
+		{ 
+			intake.closeIntake(true);
+		}
+		
+		if(controller.getButtonB())
+		{ 
+			intake.closeIntake(false);
 		}
 	}
 	

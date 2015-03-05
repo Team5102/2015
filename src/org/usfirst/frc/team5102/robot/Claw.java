@@ -41,22 +41,4 @@ public class Claw extends RobotElement
 			clawPiston.set(DoubleSolenoid.Value.kReverse);
 		}
 	}
-	
-	public void teleop()
-	{
-		if(controller.getLeftTrigger())
-		{ 
-			closeClaw(true);
-		}
-		
-		if(controller.getRightTrigger())
-		{ 
-			closeClaw(false);
-		}
-	}
-	
-	public void autonomous()
-	{
-		
-	}
 }

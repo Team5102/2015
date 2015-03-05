@@ -25,22 +25,4 @@ public class Intake extends RobotElement
 	{
 		
 	}
-	
-	public void teleop()
-	{
-		if(controller.getButtonA())
-		{ 
-			closeIntake(true);
-		}
-		
-		if(controller.getButtonB())
-		{ 
-			closeIntake(false);
-		}
-	}
-	
-	public void autonomous()
-	{
-		
-	}
 }
