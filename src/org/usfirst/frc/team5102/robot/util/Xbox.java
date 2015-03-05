@@ -55,14 +55,24 @@ public class Xbox
 		return stick.getRawButton(4);
 	}
 	
-	public boolean getLeftTrigger()
+	public boolean getLeftTriggerButton()
 	{
 		return stick.getRawButton(5);
 	}
 	
-	public boolean getRightTrigger()
+	public boolean getRightTriggerButton()
 	{
 		return stick.getRawButton(6);
+	}
+	
+	public double getLeftTriggerAxis()
+	{
+		return stick.getRawAxis(2);
+	}
+	
+	public double getRightTriggerAxis()
+	{
+		return stick.getRawAxis(3);
 	}
 	
 	public double applyDeadband(double magnitude, double deadband)

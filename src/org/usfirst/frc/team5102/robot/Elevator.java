@@ -127,26 +127,36 @@ public class Elevator extends RobotElement
 		
 		//==========Claw==========
 		
-		if(controller.getLeftTrigger())
+		if(controller.getLeftTriggerButton())
 		{ 
 			claw.closeClaw(true);
 		}
 		
-		if(controller.getRightTrigger())
+		if(controller.getRightTriggerButton())
 		{ 
 			claw.closeClaw(false);
 		}
 		
 		//==========Intake==========
 		
-		if(controller.getButtonA())
+		if(controller.getLeftTriggerAxis() > 0.5)
 		{ 
 			intake.closeIntake(true);
 		}
 		
-		if(controller.getButtonB())
+		if(controller.getRightTriggerAxis() > 0.5)
 		{ 
 			intake.closeIntake(false);
+		}
+		
+		if(controller.getButtonA())
+		{ 
+			intake.intakeMotors(true);
+		}
+		
+		if(controller.getButtonB())
+		{ 
+			intake.intakeMotors(false);
 		}
 	}
 	

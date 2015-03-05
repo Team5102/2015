@@ -21,8 +21,18 @@ public class Intake extends RobotElement
 		intakePiston.set(closeIntake);
 	}
 	
-	public void intakeMotors()
+	public void intakeMotors(boolean intakeMotors)
 	{
+		if(intakeMotors == true)
+		{
+			leftIntakeMotor.set(1.0);
+			rightIntakeMotor.set(1.0);
+		}
 		
+		if(intakeMotors == false)
+		{
+			leftIntakeMotor.set(0.0);
+			rightIntakeMotor.set(0.0);
+		}
 	}
 }

@@ -37,13 +37,13 @@ public class Drive extends RobotElement
 		
 		//==========Shifter==========
 		
-		if(controller.getLeftTrigger())
+		if(controller.getLeftTriggerButton())
 		{ 
 			shifter.shiftGears(1);
 			System.out.println("1st gear");
 		}
 		
-		if(controller.getRightTrigger())
+		if(controller.getRightTriggerButton())
 		{ 
 			shifter.shiftGears(2);
 			System.out.println("2nd gear");
