@@ -25,8 +25,8 @@ public class Intake extends RobotElement
 	{
 		if(intakeMotors == true)
 		{
-			leftIntakeMotor.set(1.0);
-			rightIntakeMotor.set(1.0);
+			leftIntakeMotor.set(0.5);
+			rightIntakeMotor.set(0.5);
 		}
 		
 		if(intakeMotors == false)

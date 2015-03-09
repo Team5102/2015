@@ -2,6 +2,8 @@ package org.usfirst.frc.team5102.robot;
 
 import edu.wpi.first.wpilibj.AnalogPotentiometer;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Talon;
 
 public class Elevator extends RobotElement
@@ -32,7 +34,7 @@ public class Elevator extends RobotElement
 		
 	}
 	
-	public void raiseElevator(double raiseAmount)
+	public boolean raiseElevator(double raiseAmount)
 	{
 		boolean topLimitStatus = topElevatorLimit.get();
 		boolean bottomLimitStatus = bottomElevatorLimit.get();
@@ -45,10 +47,10 @@ public class Elevator extends RobotElement
 			{
 				System.out.println("going down...");
 				elevatorMotor.set(raiseAmount);
-				return;
+				return false;
 			}
 			elevatorMotor.set(0.0);
-			return;
+			return true;
 		}
 		
 		if(bottomLimitStatus == false)
@@ -60,17 +62,19 @@ public class Elevator extends RobotElement
 				System.out.println("going up...");
 				
 				elevatorMotor.set(raiseAmount);
-				return;
+				return false;
 			}
 			elevatorMotor.set(0.0);
-			return;
+			return true;
 		}
 		elevatorMotor.set(raiseAmount);
+		return false;
 	}
 	
-	public void toteHeight()
+	public void defaultPosition()
 	{
-		userInput = false;
+		claw.closeClaw(false);
+		intake.closeIntake(true);
 		
 		double currentHeight = potentiometer.get();
 		
@@ -80,37 +84,46 @@ public class Elevator extends RobotElement
 		{
 			if(currentHeight < 0.5)
 			{
-				elevatorMotor.set(-1.0);
+				raiseElevator(-1.0);
 			}
 			
 			if(currentHeight > 0.5)
 			{
-				elevatorMotor.set(1.0);
+				raiseElevator(1.0);
 			}
 			
 			sensorStatus = toteHeightSensor.get();
 		}
 		elevatorMotor.set(0.0);
-		
-		userInput = true;
 	}
 	
 	public void gotoBottom()
 	{
-		boolean limitStatus = true;
-		while(limitStatus == true)
+		while(raiseElevator(-1.0) == false)
 		{
-			elevatorMotor.set(-1.0);
-			limitStatus = bottomElevatorLimit.get();
+			
 		}
-		elevatorMotor.set(0.0);
 	}
 	
-	public void userInput(boolean input)
+	public void loadTote()
 	{
-		userInput = input;
-	}
+		intake.closeIntake(true);
+		
+		Timer temp = new Timer();
+		
+		while(temp.get() < 1)
+		{
+			
+		}
+		
+		temp.reset();
+		
+		gotoBottom();
 	
+		intake.closeIntake(false);
+	
+		defaultPosition();
+	}
 	
 	public void teleop()
 	{
@@ -122,7 +135,11 @@ public class Elevator extends RobotElement
 		
 		if(controller.getButtonX())
 		{ 
-			toteHeight();
+			userInput = false;
+			
+			defaultPosition();
+			
+			userInput = true;
 		}
 		
 		//==========Claw==========
@@ -149,7 +166,7 @@ public class Elevator extends RobotElement
 			intake.closeIntake(false);
 		}
 		
-		if(controller.getButtonA())
+		if(controller.getButtonY())
 		{ 
 			intake.intakeMotors(true);
 		}
@@ -157,6 +174,17 @@ public class Elevator extends RobotElement
 		if(controller.getButtonB())
 		{ 
 			intake.intakeMotors(false);
+		}
+		
+		//==========Other==========
+		
+		if(controller.getButtonA())
+		{
+			userInput = false;
+			
+			loadTote();
+			
+			userInput = true;
 		}
 	}
 	
