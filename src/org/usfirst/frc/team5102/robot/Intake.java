@@ -1,24 +1,33 @@
 package org.usfirst.frc.team5102.robot;
 
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Talon;
 
 public class Intake extends RobotElement
 {
-	private Solenoid intakePiston;
+	private DoubleSolenoid intakePiston;
 	private Talon leftIntakeMotor, rightIntakeMotor;
 	
 	public Intake()
 	{
 		super(1);
-		intakePiston = new Solenoid(7);
+		intakePiston = new DoubleSolenoid(7,6);
 		leftIntakeMotor = new Talon(4);
 		rightIntakeMotor = new Talon(5);
 	}
 	
 	public void closeIntake(boolean closeIntake)
 	{
-		intakePiston.set(closeIntake);
+		if(closeIntake == true)
+		{
+			intakePiston.set(Value.kForward);
+		}
+		
+		else if(closeIntake == false)
+		{
+			intakePiston.set(Value.kReverse);
+		}
 	}
 	
 	public void intakeMotors(boolean intakeMotors)

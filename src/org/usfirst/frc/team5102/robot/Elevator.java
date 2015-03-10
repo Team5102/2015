@@ -15,6 +15,8 @@ public class Elevator extends RobotElement
 	private AnalogPotentiometer potentiometer;
 	private DigitalInput toteHeightSensor;
 	private boolean userInput = true;
+	private boolean practiceMode = false;
+	int counter = 0;
 	
 	private Claw claw;
 	private Intake intake;
@@ -73,7 +75,7 @@ public class Elevator extends RobotElement
 	
 	public void defaultPosition()
 	{
-		claw.closeClaw(false);
+		claw.closeClaw(true);
 		intake.closeIntake(true);
 		
 		double currentHeight = potentiometer.get();
@@ -99,7 +101,7 @@ public class Elevator extends RobotElement
 	
 	public void gotoBottom()
 	{
-		while(raiseElevator(-1.0) == false)
+		while(raiseElevator(1.0) == false)
 		{
 			
 		}
@@ -107,9 +109,11 @@ public class Elevator extends RobotElement
 	
 	public void loadTote()
 	{
-		intake.closeIntake(true);
+		intake.closeIntake(false);
 		
 		Timer temp = new Timer();
+		
+		temp.start();
 		
 		while(temp.get() < 1)
 		{
@@ -120,7 +124,7 @@ public class Elevator extends RobotElement
 		
 		gotoBottom();
 	
-		intake.closeIntake(false);
+		intake.closeIntake(true);
 	
 		defaultPosition();
 	}
@@ -128,9 +132,63 @@ public class Elevator extends RobotElement
 	public void teleop()
 	{
 		//==========Elevator==========
+		
+		if(controller.getButtonBACK())
+		{
+			
+			if(counter > 100)
+			{
+				if(practiceMode == false)
+				{
+					practiceMode = true;
+					System.out.println("practice mode enabled");
+				}
+				
+				else if(practiceMode = true)
+				{
+					practiceMode = false;
+					System.out.println("practice mode disabled");
+				}
+				counter = 0;
+			}
+			else
+			{
+				counter++;
+			}
+		}
+		
+		else
+		{
+			counter = 0;
+		}
+		
 		if (userInput = true)
 		{
-			raiseElevator(controller.applyDeadband(controller.getLeftStickY()));
+			if(practiceMode == false)
+			{
+				raiseElevator(controller.applyDeadband(controller.getLeftStickY()));
+			}
+			
+			else
+			{
+				if(controller.getLeftStickY() > -0.5)
+				{
+					if(controller.getLeftStickY() < 0.5)
+					{
+						raiseElevator(controller.applyDeadband(controller.getLeftStickY()));
+					}
+					
+					else
+					{
+						raiseElevator(0.5);
+					}
+				}
+				
+				else
+				{
+					raiseElevator(-0.5);
+				}
+			}
 		}
 		
 		if(controller.getButtonX())

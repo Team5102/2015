@@ -6,7 +6,7 @@ public class Xbox
 {
 	private Joystick stick;
 	
-	private double deadband = 0.05;
+	private double deadband = 0.1;
 	
 	private int i = 0;
 	
@@ -53,6 +53,11 @@ public class Xbox
 	public boolean getButtonY()
 	{
 		return stick.getRawButton(4);
+	}
+	
+	public boolean getButtonBACK()
+	{
+		return stick.getRawButton(7);
 	}
 	
 	public boolean getLeftTriggerButton()
