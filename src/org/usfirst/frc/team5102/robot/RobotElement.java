@@ -10,6 +10,14 @@ public class RobotElement
 	
 	protected Xbox controller;
 	
+	enum elementState
+	{
+		open,
+		closed
+	}
+	
+	public void setElementState(elementState state){}
+	
 	RobotElement(int port)
 	{
 		controller = new Xbox(port);
@@ -20,6 +28,10 @@ public class RobotElement
 		
 	}
 	public void autonomous()
+	{
+		
+	}
+	public void test()
 	{
 		
 	}

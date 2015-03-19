@@ -45,8 +45,9 @@ public class Robot extends IterativeRobot
     /**
      * This function is called periodically during test mode
      */
-    public void testPeriodic() {
-    
+    public void testPeriodic()
+    {
+    	elevator.test();
     }
     
 }

@@ -7,11 +7,28 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class Claw extends RobotElement
 {
 	private DoubleSolenoid clawPiston;
+	private elementState clawState;
 	
 	public Claw()
-	{	
+	{
 		super(1);
 		clawPiston = new DoubleSolenoid(2,3);
+		clawState = elementState.open;
+	}
+	
+	public void setElementState(elementState state)
+	{
+		clawState = state;
+		
+		switch(state)
+		{
+			case closed:
+				clawPiston.set(Value.kForward);
+				break;
+			default:
+				clawPiston.set(Value.kReverse);
+				break;
+		}
 	}
 		
 	public int getClawState()
@@ -29,16 +46,13 @@ public class Claw extends RobotElement
 		return clawState;
 	}
 	
-	public void closeClaw(boolean closeClaw)
+	public void closeClaw()
 	{
-		if(closeClaw == true)
-		{
-			clawPiston.set(DoubleSolenoid.Value.kForward);
-		}
-		
-		else if(closeClaw == false)
-		{
-			clawPiston.set(DoubleSolenoid.Value.kReverse);
-		}
+		setElementState(elementState.closed);
+	}
+	
+	public void openClaw()
+	{
+		setElementState(elementState.open);
 	}
 }

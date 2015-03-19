@@ -33,7 +33,7 @@ public class Drive extends RobotElement
 	{
 		//==========Drive==========
 		
-		drive(controller.getLeftStickY(), -controller.getRightStickX());
+		drive(controller.getLeftStickY(), controller.getRightStickX());
 		
 		//==========Shifter==========
 		

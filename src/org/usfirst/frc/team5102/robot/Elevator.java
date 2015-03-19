@@ -18,8 +18,20 @@ public class Elevator extends RobotElement
 	private boolean practiceMode = false;
 	int counter = 0;
 	
+	private Timer intakeTimer, elevatorMoveTimer;
+	
+	private double timeToLowerElevator = 2.0;
+	private double elevatorLowerSpeed = -.75;
+	
 	private Claw claw;
 	private Intake intake;
+	
+	enum position
+	{
+		top,
+		bottom,
+		tote
+	}
 	
 	public Elevator()
 	{
@@ -33,7 +45,8 @@ public class Elevator extends RobotElement
 		bottomElevatorLimit = new DigitalInput(1); //check port
 		toteHeightSensor = new DigitalInput(2);
 		potentiometer = new AnalogPotentiometer(0);
-		
+		intakeTimer = new Timer();
+		elevatorMoveTimer = new Timer();
 	}
 	
 	public boolean raiseElevator(double raiseAmount)
@@ -41,67 +54,32 @@ public class Elevator extends RobotElement
 		boolean topLimitStatus = topElevatorLimit.get();
 		boolean bottomLimitStatus = bottomElevatorLimit.get();
 		
-		if(topLimitStatus == false)
-		{
-			System.out.println("top limit switch triggered");
-			System.out.println(raiseAmount);
-			if(raiseAmount > 0.0)
-			{
-				System.out.println("going down...");
-				elevatorMotor.set(raiseAmount);
-				return false;
-			}
-			elevatorMotor.set(0.0);
-			return true;
-		}
-		
-		if(bottomLimitStatus == false)
-		{
-			System.out.println("bottom limit switch triggered");
-			System.out.println(raiseAmount);
-			if(raiseAmount < 0.0)
-			{
-				System.out.println("going up...");
-				
-				elevatorMotor.set(raiseAmount);
-				return false;
-			}
-			elevatorMotor.set(0.0);
-			return true;
-		}
 		elevatorMotor.set(raiseAmount);
 		return false;
+		
 	}
 	
-	public void defaultPosition()
+	public void gotoHeight(position height)
 	{
-		claw.closeClaw(true);
-		intake.closeIntake(true);
-		
-		double currentHeight = potentiometer.get();
-		
-		boolean sensorStatus = true;
-		
-		while(sensorStatus == true)
+		if(height == position.bottom)
 		{
-			if(currentHeight < 0.5)
-			{
-				raiseElevator(-1.0);
-			}
+			raiseElevator(elevatorLowerSpeed);
 			
-			if(currentHeight > 0.5)
-			{
-				raiseElevator(1.0);
-			}
+			while(elevatorMoveTimer.get() < timeToLowerElevator){}
 			
-			sensorStatus = toteHeightSensor.get();
+			elevatorMoveTimer.reset();
 		}
-		elevatorMotor.set(0.0);
-	}
-	
-	public void gotoBottom()
-	{
-		while(raiseElevator(1.0) == false)
+			
+		else if(height == position.tote)
+		{
+			raiseElevator(-elevatorLowerSpeed);
+			
+			while(elevatorMoveTimer.get() < timeToLowerElevator){}
+			
+			elevatorMoveTimer.reset();
+		}
+		
+		else if(height == position.top)
 		{
 			
 		}
@@ -109,42 +87,146 @@ public class Elevator extends RobotElement
 	
 	public void loadTote()
 	{
-		intake.closeIntake(false);
+		intake.closeIntake();			//close the intake arms
 		
-		Timer temp = new Timer();
+		while(intakeTimer.get() < 1){}
 		
-		temp.start();
+		intakeTimer.reset();
 		
-		while(temp.get() < 1)
-		{
-			
-		}
+		intake.openIntake();
+		claw.openClaw();
 		
-		temp.reset();
-		
-		gotoBottom();
+		gotoHeight(position.bottom);			//move the elevator to the bottom
 	
-		intake.closeIntake(true);
+		intake.openIntake();			//open the intake arms
 	
-		defaultPosition();
+		gotoHeight(position.tote);			//go to default position
+		userInput = true;
 	}
 	
 	public void teleop()
 	{
 		//==========Elevator==========
+		if(userInput)
+		{
+			raiseElevator(controller.applyDeadband(-controller.getLeftStickY()));
+		}
 		
+		if(bottomElevatorLimit.get())
+		{
+			System.out.println("bottom limit triggered");
+		}
+		
+		if(controller.getButtonA())
+		{
+			userInput = false;
+			loadTote();
+		}
+		
+		/*
+		if(controller.getButtonX())
+		 
+		{ 
+			userInput = false;
+			
+			gotoHeight(position.tote);
+			
+			userInput = true;
+		}
+		*/
+		
+		//==========Claw==========
+		
+		if(controller.getLeftTriggerButton())
+		{ 
+			claw.openClaw();;
+		}
+		
+		if(controller.getRightTriggerButton())
+		{ 
+			claw.closeClaw();
+		}
+		
+		//==========Intake==========
+		
+		if(controller.getLeftTriggerAxis() > 0.5)
+		{ 
+			intake.openIntake();
+		}
+		
+		if(controller.getRightTriggerAxis() > 0.5)
+		{ 
+			intake.closeIntake();
+		}
+		
+		if(controller.getButtonY())
+		{ 
+			intake.intakeMotors(true);
+		}
+		
+		if(controller.getButtonB())
+		{ 
+			intake.intakeMotors(false);
+		}
+		
+		//==========Other==========
+		
+		/*
+		if(controller.getButtonA())
+		{
+			userInput = false;
+			
+			loadTote();
+			
+			userInput = true;
+		}
+		*/
+	}
+	
+	public void autonomous()
+	{
+		
+	}
+	
+	public void test()
+	{
+		/*
+		else
+		{
+			if(controller.getLeftStickY() > 0.5)
+			{
+				if(controller.getLeftStickY() < -0.5)
+				{
+					raiseElevator(controller.applyDeadband(-controller.getLeftStickY()));
+				}
+				
+				else
+				{
+					raiseElevator(-0.5);
+				}
+			}
+			
+			else
+			{
+				raiseElevator(0.5);
+			}
+		} 
+		*/
+		
+		
+		/*
 		if(controller.getButtonBACK())
 		{
 			
 			if(counter > 100)
 			{
-				if(practiceMode == false)
+				if(!practiceMode)
 				{
 					practiceMode = true;
 					System.out.println("practice mode enabled");
 				}
 				
-				else if(practiceMode = true)
+				else if(practiceMode)
 				{
 					practiceMode = false;
 					System.out.println("practice mode disabled");
@@ -161,93 +243,6 @@ public class Elevator extends RobotElement
 		{
 			counter = 0;
 		}
-		
-		if (userInput = true)
-		{
-			if(practiceMode == false)
-			{
-				raiseElevator(controller.applyDeadband(controller.getLeftStickY()));
-			}
-			
-			else
-			{
-				if(controller.getLeftStickY() > -0.5)
-				{
-					if(controller.getLeftStickY() < 0.5)
-					{
-						raiseElevator(controller.applyDeadband(controller.getLeftStickY()));
-					}
-					
-					else
-					{
-						raiseElevator(0.5);
-					}
-				}
-				
-				else
-				{
-					raiseElevator(-0.5);
-				}
-			}
-		}
-		
-		if(controller.getButtonX())
-		{ 
-			userInput = false;
-			
-			defaultPosition();
-			
-			userInput = true;
-		}
-		
-		//==========Claw==========
-		
-		if(controller.getLeftTriggerButton())
-		{ 
-			claw.closeClaw(true);
-		}
-		
-		if(controller.getRightTriggerButton())
-		{ 
-			claw.closeClaw(false);
-		}
-		
-		//==========Intake==========
-		
-		if(controller.getLeftTriggerAxis() > 0.5)
-		{ 
-			intake.closeIntake(true);
-		}
-		
-		if(controller.getRightTriggerAxis() > 0.5)
-		{ 
-			intake.closeIntake(false);
-		}
-		
-		if(controller.getButtonY())
-		{ 
-			intake.intakeMotors(true);
-		}
-		
-		if(controller.getButtonB())
-		{ 
-			intake.intakeMotors(false);
-		}
-		
-		//==========Other==========
-		
-		if(controller.getButtonA())
-		{
-			userInput = false;
-			
-			loadTote();
-			
-			userInput = true;
-		}
-	}
-	
-	public void autonomous()
-	{
-		
+		*/
 	}
 }
